@@ -930,7 +930,10 @@ export default function Expositions({ isVisitePage: isVisitePage = false, titreE
     };
 
     const enableLandscape = async () => {
-        if (!isAndroid()) return;
+        if (!isAndroid()){
+            console.log("nnn "+navigator.userAgent)
+            return;
+        } 
 
         try {
             // Passage en fullscreen (souvent nécessaire pour lock l'orientation)
