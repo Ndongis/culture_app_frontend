@@ -1145,7 +1145,7 @@ export default function Expositions({ isVisitePage: isVisitePage = false, titreE
                                         versSalle(salle.id, activeExpo.id);
                                     }
 
-                                }, 500);
+                                }, 3000);
                             }}
                             title="Visiter la salle"
                         >
