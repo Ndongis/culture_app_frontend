@@ -930,8 +930,9 @@ export default function Expositions({ isVisitePage: isVisitePage = false, titreE
     };
 
     const enableLandscape = async () => {
+        console.log("nnn "+navigator.userAgent)
         if (!isAndroid()){
-            console.log("nnn "+navigator.userAgent)
+            
             return;
         } 
 
