@@ -126,7 +126,7 @@ const GridIcon = () => (
 );
 
 // ── Main Component ────────────────────────────────────────────────────────────
-export default function Expositions({isVisitePage:isVisitePage=false,titreExpo: titreExpo=null, expositionUrl:expositionUrl=null, institutionId: propInstitutionId = null, institutionNom: propInstitutionNom = '', onRetour = null }) {
+export default function Expositions({ isVisitePage: isVisitePage = false, titreExpo: titreExpo = null, expositionUrl: expositionUrl = null, institutionId: propInstitutionId = null, institutionNom: propInstitutionNom = '', onRetour = null }) {
     const navigate = useNavigate();
     const location = useLocation();
     const outletContext = useOutletContext();
@@ -140,7 +140,7 @@ export default function Expositions({isVisitePage:isVisitePage=false,titreExpo: 
     const loadingUser = authContext?.loadingUser ?? false;
 
     // Mode visite public
-   // const isVisitePage = location.pathname === '/visites/expositions';
+    // const isVisitePage = location.pathname === '/visites/expositions';
 
     // ── Rôles & permissions ───────────────────────────────────────────────────
     const canEdit = user?.role === 'administrateur' || ((user?.role === 'admin_institution' || user?.role === 'conservateur' || user?.role === 'curateur'));
@@ -276,26 +276,26 @@ export default function Expositions({isVisitePage:isVisitePage=false,titreExpo: 
     useEffect(() => {
         let url;
 
-if (expositionUrl != null) {
-    url = `${EXPO_API}${expositionUrl}`;
-} else {
-    const params = new URLSearchParams();
+        if (expositionUrl != null) {
+            url = `${EXPO_API}${expositionUrl}`;
+        } else {
+            const params = new URLSearchParams();
 
-    if (effectiveInstitutionId) {
-        params.set("institution_id", effectiveInstitutionId);
-    }
+            if (effectiveInstitutionId) {
+                params.set("institution_id", effectiveInstitutionId);
+            }
 
-    if (debouncedSearch) {
-        params.set("q", debouncedSearch);
-    }
+            if (debouncedSearch) {
+                params.set("q", debouncedSearch);
+            }
 
-    url = debouncedSearch
-        ? `${EXPO_API}/search?${params.toString()}`
-        : effectiveInstitutionId
-            ? `${EXPO_API}?${params.toString()}`
-            : EXPO_API;
-}
-        
+            url = debouncedSearch
+                ? `${EXPO_API}/search?${params.toString()}`
+                : effectiveInstitutionId
+                    ? `${EXPO_API}?${params.toString()}`
+                    : EXPO_API;
+        }
+
 
         setLoading(true);
         fetch(url)
@@ -314,7 +314,7 @@ if (expositionUrl != null) {
 
     // ── Fetch thèmes ─────────────────────────────────────────────────────────
     useEffect(() => {
-        
+
         setThemesLoading(true);
         fetch(`${BASE_URL}/api/themes`)
             .then((res) => res.ok ? res.json() : [])
@@ -422,145 +422,145 @@ if (expositionUrl != null) {
 
     const [expoLoading, setExpoLoading] = useState(false);
 
-   // PATCH exposition
-const handleUpdate = async () => {
-    const errs = validateExpoForm(formData);
+    // PATCH exposition
+    const handleUpdate = async () => {
+        const errs = validateExpoForm(formData);
 
-    if (Object.keys(errs).length > 0) {
-        setExpoErrors(errs);
-        return;
-    }
-
-    setExpoLoading(true);
-
-    try {
-        const fd = new FormData();
-
-        fd.append("nom", formData.nom.trim());
-        fd.append("description", formData.description.trim());
-
-        if (formData.type_exposition) {
-            fd.append("type_exposition", formData.type_exposition);
+        if (Object.keys(errs).length > 0) {
+            setExpoErrors(errs);
+            return;
         }
 
-        (formData.theme_ids || []).forEach((id) => {
-            fd.append("themes", id);
-        });
+        setExpoLoading(true);
 
-        if (editUploadedImage?.file) {
-            fd.append("image", editUploadedImage.file);
+        try {
+            const fd = new FormData();
+
+            fd.append("nom", formData.nom.trim());
+            fd.append("description", formData.description.trim());
+
+            if (formData.type_exposition) {
+                fd.append("type_exposition", formData.type_exposition);
+            }
+
+            (formData.theme_ids || []).forEach((id) => {
+                fd.append("themes", id);
+            });
+
+            if (editUploadedImage?.file) {
+                fd.append("image", editUploadedImage.file);
+            }
+
+            const response = await axios.patch(
+                `${EXPO_API}/${selectedExpo.id}`,
+                fd,
+                {
+                    withCredentials: true,
+                }
+            );
+
+            const updated = response.data;
+
+            setExpositions((prev) =>
+                prev.map((e) =>
+                    e.id === selectedExpo.id
+                        ? {
+                            ...e,
+                            ...updated,
+                            _resolvedImage:
+                                getExpoImage(updated) || e._resolvedImage,
+                            salles: e.salles,
+                            _sallesLoaded: e._sallesLoaded,
+                        }
+                        : e
+                )
+            );
+
+            setExpoErrors({});
+
+        } catch (err) {
+            alert(
+                err.response?.data?.detail ||
+                err.response?.data?.message ||
+                err.message ||
+                "Erreur lors de la modification"
+            );
+        } finally {
+            setExpoLoading(false);
+            setShowModal(false);
         }
+    };
 
-        const response = await axios.patch(
-            `${EXPO_API}/${selectedExpo.id}`,
-            fd,
-            {
-                withCredentials: true,
-            }
-        );
+    // DELETE exposition
+    const handleDelete = async () => {
+        setExpoLoading(true);
 
-        const updated = response.data;
+        try {
+            await axios.delete(
+                `${EXPO_API}/${selectedExpo.id}`,
+                {
+                    withCredentials: true,
+                }
+            );
 
-        setExpositions((prev) =>
-            prev.map((e) =>
-                e.id === selectedExpo.id
-                    ? {
-                          ...e,
-                          ...updated,
-                          _resolvedImage:
-                              getExpoImage(updated) || e._resolvedImage,
-                          salles: e.salles,
-                          _sallesLoaded: e._sallesLoaded,
-                      }
-                    : e
-            )
-        );
+            setExpositions((prev) =>
+                prev.filter((e) => e.id !== selectedExpo.id)
+            );
 
-        setExpoErrors({});
+            setExpoIndex((c) =>
+                Math.max(0, c >= expositions.length - 1 ? c - 1 : c)
+            );
 
-    } catch (err) {
-        alert(
-            err.response?.data?.detail ||
-            err.response?.data?.message ||
-            err.message ||
-            "Erreur lors de la modification"
-        );
-    } finally {
-        setExpoLoading(false);
-        setShowModal(false);
-    }
-};
+        } catch (err) {
+            alert(
+                err.response?.data?.detail ||
+                err.response?.data?.message ||
+                err.message ||
+                "Erreur lors de la suppression"
+            );
+        } finally {
+            setExpoLoading(false);
+            setShowModal(false);
+        }
+    };
 
-   // DELETE exposition
-const handleDelete = async () => {
-    setExpoLoading(true);
 
-    try {
-        await axios.delete(
-            `${EXPO_API}/${selectedExpo.id}`,
-            {
-                withCredentials: true,
-            }
-        );
-
-        setExpositions((prev) =>
-            prev.filter((e) => e.id !== selectedExpo.id)
-        );
-
-        setExpoIndex((c) =>
-            Math.max(0, c >= expositions.length - 1 ? c - 1 : c)
-        );
-
-    } catch (err) {
-        alert(
-            err.response?.data?.detail ||
-            err.response?.data?.message ||
-            err.message ||
-            "Erreur lors de la suppression"
-        );
-    } finally {
-        setExpoLoading(false);
-        setShowModal(false);
-    }
-};
-
-   
     // PATCH status exposition
-const handleUpdateStatus = async (expo, newStatus) => {
-    try {
-        await axios.patch(
-            `${EXPO_API}/${expo.id}/status`,
-            {
-                status_exposition: newStatus,
-            },
-            {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
+    const handleUpdateStatus = async (expo, newStatus) => {
+        try {
+            await axios.patch(
+                `${EXPO_API}/${expo.id}/status`,
+                {
+                    status_exposition: newStatus,
                 },
-            }
-        );
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
-        setExpositions((prev) =>
-            prev.map((e) =>
-                e.id === expo.id
-                    ? {
-                          ...e,
-                          status_exposition: newStatus,
-                      }
-                    : e
-            )
-        );
+            setExpositions((prev) =>
+                prev.map((e) =>
+                    e.id === expo.id
+                        ? {
+                            ...e,
+                            status_exposition: newStatus,
+                        }
+                        : e
+                )
+            );
 
-    } catch (err) {
-        alert(
-            err.response?.data?.detail ||
-            err.response?.data?.message ||
-            err.message ||
-            "Erreur lors de la mise à jour du statut"
-        );
-    }
-};
+        } catch (err) {
+            alert(
+                err.response?.data?.detail ||
+                err.response?.data?.message ||
+                err.message ||
+                "Erreur lors de la mise à jour du statut"
+            );
+        }
+    };
     const [confirmEditModal, setConfirmEditModal] = useState({ open: false, salleId: null, expositionId: null });
 
     const storeTransitionData = () => {
@@ -597,92 +597,92 @@ const handleUpdateStatus = async (expo, newStatus) => {
 
 
 
-// POST exposition
-const handleAdd = async () => {
-    const errs = validateExpoForm(formData);
+    // POST exposition
+    const handleAdd = async () => {
+        const errs = validateExpoForm(formData);
 
-    if (Object.keys(errs).length > 0) {
-        setExpoErrors(errs);
-        return;
-    }
-
-    setExpoLoading(true);
-
-    try {
-        const fd = new FormData();
-
-        fd.append("nom", formData.nom);
-        fd.append("description", formData.description);
-
-        if (formData.type_exposition) {
-            fd.append("type_exposition", formData.type_exposition);
+        if (Object.keys(errs).length > 0) {
+            setExpoErrors(errs);
+            return;
         }
 
-        // institution_id selon le rôle
-        if (effectiveInstitutionId) {
-            fd.append("institution_id", effectiveInstitutionId);
-        }
+        setExpoLoading(true);
 
-        if (formData.artiste_id) {
-            fd.append("artiste_id", formData.artiste_id);
-        }
+        try {
+            const fd = new FormData();
 
-        (formData.theme_ids || []).forEach((id) => {
-            fd.append("themes", id);
-        });
+            fd.append("nom", formData.nom);
+            fd.append("description", formData.description);
 
-        if (uploadedImage?.file) {
-            fd.append("image", uploadedImage.file);
-        }
-
-        const response = await axios.post(
-            `${BASE_URL}/api/expositions`,
-            fd,
-            {
-                withCredentials: true,
+            if (formData.type_exposition) {
+                fd.append("type_exposition", formData.type_exposition);
             }
-        );
 
-        const json = response.data;
+            // institution_id selon le rôle
+            if (effectiveInstitutionId) {
+                fd.append("institution_id", effectiveInstitutionId);
+            }
 
-        const created = json.data ?? json;
+            if (formData.artiste_id) {
+                fd.append("artiste_id", formData.artiste_id);
+            }
 
-        const newExpo = {
-            ...created,
-            salles: [],
-            _sallesLoaded: false,
-            _resolvedImage: previewImage,
-        };
+            (formData.theme_ids || []).forEach((id) => {
+                fd.append("themes", id);
+            });
 
-        setExpositions((prev) => [...prev, newExpo]);
-        setExpoIndex(expositions.length);
+            if (uploadedImage?.file) {
+                fd.append("image", uploadedImage.file);
+            }
 
-        setFormData({
-            nom: "",
-            description: "",
-            user_id: user?.id,
-            theme_ids: [],
-            type_exposition: "",
-            institution_id: effectiveInstitutionId,
-            artiste_id: null,
-        });
+            const response = await axios.post(
+                `${BASE_URL}/api/expositions`,
+                fd,
+                {
+                    withCredentials: true,
+                }
+            );
 
-        setUploadedImage(null);
-        setSelectedLocalImage(null);
-        setSelectedThemeImages({});
+            const json = response.data;
 
-    } catch (err) {
-        alert(
-            err.response?.data?.detail ||
-            err.response?.data?.message ||
-            err.message ||
-            "Erreur lors de l'ajout"
-        );
-    } finally {
-        setExpoLoading(false);
-        setShowAddModal(false);
-    }
-};
+            const created = json.data ?? json;
+
+            const newExpo = {
+                ...created,
+                salles: [],
+                _sallesLoaded: false,
+                _resolvedImage: previewImage,
+            };
+
+            setExpositions((prev) => [...prev, newExpo]);
+            setExpoIndex(expositions.length);
+
+            setFormData({
+                nom: "",
+                description: "",
+                user_id: user?.id,
+                theme_ids: [],
+                type_exposition: "",
+                institution_id: effectiveInstitutionId,
+                artiste_id: null,
+            });
+
+            setUploadedImage(null);
+            setSelectedLocalImage(null);
+            setSelectedThemeImages({});
+
+        } catch (err) {
+            alert(
+                err.response?.data?.detail ||
+                err.response?.data?.message ||
+                err.message ||
+                "Erreur lors de l'ajout"
+            );
+        } finally {
+            setExpoLoading(false);
+            setShowAddModal(false);
+        }
+    };
     const [salleErrors, setSalleErrors] = useState({});
     // Image upload pour modal modifier exposition
     const [editUploadedImage, setEditUploadedImage] = useState(null);
@@ -709,210 +709,210 @@ const handleAdd = async () => {
         setShowSalleModal(true);
     };
 
-   const handleSalleUpdate = async () => {
-    const errs = validateSalleForm(salleFormData);
+    const handleSalleUpdate = async () => {
+        const errs = validateSalleForm(salleFormData);
 
-    if (Object.keys(errs).length > 0) {
-        setSalleErrors(errs);
-        return;
-    }
+        if (Object.keys(errs).length > 0) {
+            setSalleErrors(errs);
+            return;
+        }
 
-    setSalleLoading(true);
+        setSalleLoading(true);
 
-    try {
-        const response = await axios.patch(
-            `${SALLE_API}/${selectedSalle.id}`,
-            {
-                nom: salleFormData.nom.trim(),
-                description: salleFormData.description.trim(),
-                modele_salle_id: selectedModeleSalle ?? null,
-            },
-            {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
+        try {
+            const response = await axios.patch(
+                `${SALLE_API}/${selectedSalle.id}`,
+                {
+                    nom: salleFormData.nom.trim(),
+                    description: salleFormData.description.trim(),
+                    modele_salle_id: selectedModeleSalle ?? null,
                 },
-            }
-        );
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
-        const updated = response.data;
+            const updated = response.data;
 
-        const patch = (s) =>
-            s.id === selectedSalle.id
-                ? { ...s, ...updated, _parentExpo: s._parentExpo }
-                : s;
+            const patch = (s) =>
+                s.id === selectedSalle.id
+                    ? { ...s, ...updated, _parentExpo: s._parentExpo }
+                    : s;
 
-        setActiveExpo((prev) => ({
-            ...prev,
-            salles: prev.salles.map(patch),
-        }));
+            setActiveExpo((prev) => ({
+                ...prev,
+                salles: prev.salles.map(patch),
+            }));
 
-        setExpositions((prev) =>
-            prev.map((e) =>
-                e.id === activeExpo.id
-                    ? { ...e, salles: e.salles.map(patch) }
-                    : e
-            )
-        );
+            setExpositions((prev) =>
+                prev.map((e) =>
+                    e.id === activeExpo.id
+                        ? { ...e, salles: e.salles.map(patch) }
+                        : e
+                )
+            );
 
-        setSalleErrors({});
+            setSalleErrors({});
 
-    } catch (err) {
-        alert(
-            err.response?.data?.detail ||
-            err.response?.data?.message ||
-            err.message ||
-            "Erreur lors de la modification"
-        );
-    } finally {
-        setSalleLoading(false);
-        setShowSalleModal(false);
-        setSelectedModeleSalle(null);
-    }
-};
+        } catch (err) {
+            alert(
+                err.response?.data?.detail ||
+                err.response?.data?.message ||
+                err.message ||
+                "Erreur lors de la modification"
+            );
+        } finally {
+            setSalleLoading(false);
+            setShowSalleModal(false);
+            setSelectedModeleSalle(null);
+        }
+    };
     const handleSalleDelete = async () => {
-    setSalleLoading(true);
+        setSalleLoading(true);
 
-    try {
-        await axios.delete(
-            `${SALLE_API}/${selectedSalle.id}`,
-            {
-                withCredentials: true,
-            }
-        );
+        try {
+            await axios.delete(
+                `${SALLE_API}/${selectedSalle.id}`,
+                {
+                    withCredentials: true,
+                }
+            );
 
-        const newSalles = activeExpo.salles.filter(
-            (s) => s.id !== selectedSalle.id
-        );
+            const newSalles = activeExpo.salles.filter(
+                (s) => s.id !== selectedSalle.id
+            );
 
-        setActiveExpo((prev) => ({
-            ...prev,
-            salles: newSalles,
-        }));
+            setActiveExpo((prev) => ({
+                ...prev,
+                salles: newSalles,
+            }));
 
-        setExpositions((prev) =>
-            prev.map((e) =>
-                e.id === activeExpo.id
-                    ? { ...e, salles: newSalles }
-                    : e
-            )
-        );
+            setExpositions((prev) =>
+                prev.map((e) =>
+                    e.id === activeExpo.id
+                        ? { ...e, salles: newSalles }
+                        : e
+                )
+            );
 
-        setSalleIndex((c) =>
-            Math.max(0, c >= newSalles.length ? c - 1 : c)
-        );
+            setSalleIndex((c) =>
+                Math.max(0, c >= newSalles.length ? c - 1 : c)
+            );
 
-    } catch (err) {
-        alert(
-            err.response?.data?.detail ||
-            err.response?.data?.message ||
-            err.message ||
-            "Erreur lors de la suppression"
-        );
-    } finally {
-        setSalleLoading(false);
-        setShowSalleModal(false);
-    }
-};
+        } catch (err) {
+            alert(
+                err.response?.data?.detail ||
+                err.response?.data?.message ||
+                err.message ||
+                "Erreur lors de la suppression"
+            );
+        } finally {
+            setSalleLoading(false);
+            setShowSalleModal(false);
+        }
+    };
 
     const handleSalleAdd = async () => {
-    if (!salleFormData.nom.trim()) {
-        alert("Le nom de la salle est requis");
-        return;
-    }
+        if (!salleFormData.nom.trim()) {
+            alert("Le nom de la salle est requis");
+            return;
+        }
 
-    if (!selectedModeleSalle) {
-        alert("Veuillez sélectionner un modèle de salle");
-        return;
-    }
+        if (!selectedModeleSalle) {
+            alert("Veuillez sélectionner un modèle de salle");
+            return;
+        }
 
-    console.log(
-        "Adding salle with data:",
-        salleFormData,
-        "modele_salle:",
-        selectedModeleSalle,
-        "to expo ID:",
-        expoIdForNewSalle
-    );
+        console.log(
+            "Adding salle with data:",
+            salleFormData,
+            "modele_salle:",
+            selectedModeleSalle,
+            "to expo ID:",
+            expoIdForNewSalle
+        );
 
-    console.log("Selected modèle salle ID:", selectedModeleSalle);
+        console.log("Selected modèle salle ID:", selectedModeleSalle);
 
-    setSalleLoading(true);
+        setSalleLoading(true);
 
-    try {
-        const response = await axios.post(
-            `${SALLE_API}`,
-            {
-                nom: salleFormData.nom,
-                description: salleFormData.description,
-                modele_salle_id: selectedModeleSalle,
-                exposition_id: expoIdForNewSalle,
-            },
-            {
-                withCredentials: true,
-                headers: {
-                    "Content-Type": "application/json",
+        try {
+            const response = await axios.post(
+                `${SALLE_API}`,
+                {
+                    nom: salleFormData.nom,
+                    description: salleFormData.description,
+                    modele_salle_id: selectedModeleSalle,
+                    exposition_id: expoIdForNewSalle,
                 },
-            }
-        );
+                {
+                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
 
-        const created = response.data;
+            const created = response.data;
 
-        const newSalle = {
-            ...created,
-            _parentExpo: activeExpo,
-        };
+            const newSalle = {
+                ...created,
+                _parentExpo: activeExpo,
+            };
 
-        const newSalles = [...activeExpo.salles, newSalle];
+            const newSalles = [...activeExpo.salles, newSalle];
 
-        const updatedExpo = {
-            ...activeExpo,
-            salles: newSalles,
-        };
+            const updatedExpo = {
+                ...activeExpo,
+                salles: newSalles,
+            };
 
-        setActiveExpo(updatedExpo);
+            setActiveExpo(updatedExpo);
 
-        setExpositions((prev) =>
-            prev.map((e) =>
-                e.id === activeExpo.id
-                    ? { ...e, salles: newSalles }
-                    : e
-            )
-        );
+            setExpositions((prev) =>
+                prev.map((e) =>
+                    e.id === activeExpo.id
+                        ? { ...e, salles: newSalles }
+                        : e
+                )
+            );
 
-        setSalleFormData({
-            nom: "",
-            description: "",
-            modele_salle: null,
-        });
+            setSalleFormData({
+                nom: "",
+                description: "",
+                modele_salle: null,
+            });
 
-        setSelectedModeleSalle(null);
+            setSelectedModeleSalle(null);
 
-        // Afficher la nouvelle salle
-        setSalleIndex(newSalles.length - 1);
+            // Afficher la nouvelle salle
+            setSalleIndex(newSalles.length - 1);
 
-        setShowAddSalleModal(false);
+            setShowAddSalleModal(false);
 
-        setTransitioning(true);
+            setTransitioning(true);
 
-        setTimeout(() => {
-            setView("salles");
-            setTransitioning(false);
-        }, 300);
+            setTimeout(() => {
+                setView("salles");
+                setTransitioning(false);
+            }, 300);
 
-    } catch (err) {
-        alert(
-            err.response?.data?.detail ||
-            err.response?.data?.message ||
-            err.message ||
-            "Erreur lors de l'ajout"
-        );
+        } catch (err) {
+            alert(
+                err.response?.data?.detail ||
+                err.response?.data?.message ||
+                err.message ||
+                "Erreur lors de l'ajout"
+            );
 
-    } finally {
-        setSalleLoading(false);
-        setShowAddSalleModal(false);
-    }
-};
+        } finally {
+            setSalleLoading(false);
+            setShowAddSalleModal(false);
+        }
+    };
 
     // ── Expositions filtrées par statut ─────────────────────────────────────
     const filteredExpositions = React.useMemo(() => {
@@ -925,6 +925,28 @@ const handleAdd = async () => {
         setExpoIndex((c) => Math.min(c, Math.max(0, filteredExpositions.length - 1)));
     }, [filteredExpositions.length]);
 
+    const isAndroid = () => {
+        return /Android/i.test(navigator.userAgent);
+    };
+
+    const enableLandscape = async () => {
+        if (!isAndroid()) return;
+
+        try {
+            // Passage en fullscreen (souvent nécessaire pour lock l'orientation)
+            if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+                await document.documentElement.requestFullscreen();
+            }
+
+            if (screen.orientation?.lock) {
+                await screen.orientation.lock("landscape");
+                console.log("Orientation paysage activée");
+            }
+
+        } catch (error) {
+            console.log("Orientation non supportée :", error);
+        }
+    };
     // ── Card renderers ────────────────────────────────────────────────────────
     const renderExpoCard = (expo, isActive) => (
         <>
@@ -1023,7 +1045,7 @@ const handleAdd = async () => {
                         {(
                             user?.role === "administrateur" ||
                             (
-                                ["admin_institution", "curateur"].includes(user?.role) 
+                                ["admin_institution", "curateur"].includes(user?.role)
                             )
                         ) && (
                                 <button className="btn-voir-salles" style={{ marginLeft: 0 }} onClick={(e) => {
@@ -1091,17 +1113,40 @@ const handleAdd = async () => {
                         </div>
                         <button
                             className="btn-voir-salles btn-icon-box"
-                            onClick={(e) => {
+                            onClick={async (e) => {
                                 e.stopPropagation();
+
                                 const card = e.currentTarget.closest('.expo-card');
                                 const rect = card ? card.getBoundingClientRect() : null;
                                 const src = activeExpo?._resolvedImage || getExpoImage(activeExpo);
-                                if (rect && src) {
-                                    setZoomAnim({ src, rect: { top: rect.top, left: rect.left, width: rect.width, height: rect.height } });
-                                    setTimeout(() => { setZoomAnim(null); versSalle(salle.id, activeExpo.id); }, 700);
-                                } else {
-                                    versSalle(salle.id, activeExpo.id);
-                                }
+
+                                // Orientation Android
+                                await enableLandscape();
+
+                                // Attendre que la rotation soit appliquée
+                                setTimeout(() => {
+
+                                    if (rect && src) {
+                                        setZoomAnim({
+                                            src,
+                                            rect: {
+                                                top: rect.top,
+                                                left: rect.left,
+                                                width: rect.width,
+                                                height: rect.height
+                                            }
+                                        });
+
+                                        setTimeout(() => {
+                                            setZoomAnim(null);
+                                            versSalle(salle.id, activeExpo.id);
+                                        }, 700);
+
+                                    } else {
+                                        versSalle(salle.id, activeExpo.id);
+                                    }
+
+                                }, 500);
                             }}
                             title="Visiter la salle"
                         >
@@ -1245,7 +1290,7 @@ const handleAdd = async () => {
                             user?.role === "administrateur" ||
                             (
                                 ["admin_institution", "curateur"].includes(user?.role)
-                               
+
                             )
                         ) && (
                                 <button className="btn-add-expo" onClick={() => { setFormData({ nom: '', description: '', user_id: user?.id, theme_ids: [], type_exposition: '', institution_id: effectiveInstitutionId, artiste_id: null }); setExpoErrors({}); setTypeDropdownOpen(false); setSelectedThemeImages({}); setImagePickerOpenFor(null); setShowAddModal(true); }}>
