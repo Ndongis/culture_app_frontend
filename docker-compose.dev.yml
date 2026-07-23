@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - VITE_GATEWAY_URL=http://192.168.1.17:8000
+      - VITE_EXPO_ENDPOINT=/expositions
+      - VITE_USER_ENDPOINT=/users
+      - VITE_INSTITUTION_ENDPOINT=/institutions
+      - VITE_BIENS_ENDPOINT=/biens
+      - VITE_TRADUCTION_ENDPOINT=/traductions
+      - VITE_IA_ENDPOINT=/ia
+    ports:
+      - "5173:5173"
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - node_modules/
+        - action: sync
+          path: ./public/musee3D         # ← sync nouveaux fichiers en live
+          target: /app/public/musee3D
+        - action: rebuild
+          path: package.json
+    volumes:
+      - .:/app                                   # sync code source
+      - node_modules:/app/node_modules           # node_modules isolé ✅
+      - ./public/musee3D:/app/public/musee3D     # musee3D depuis ta machine ✅
+    networks:
+      - microservices-net
+
+volumes:
+  node_modules:        # ← manquait dans ton fichier !
+
+networks:
+  microservices-net:
+    external: true

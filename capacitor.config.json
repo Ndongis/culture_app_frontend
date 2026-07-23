@@ -1,0 +1,11 @@
+{
+  "appId": "com.ndongis.museum",
+  "appName": "Museum App",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": [
+      "localhost"
+    ]
+  }
+}

@@ -1,0 +1,364 @@
+/* Styles Généraux - Arrière-plan du corps en BLANC */
+        .home-container {
+          font-family: 'Josefin Sans', sans-serif;
+          background: #ffffff;      /* Corps de page blanc */
+          color: #161410;           /* Texte principal en sombre pour le contraste */
+          min-height: 100vh;
+          display: block;
+        }
+
+        /* ---- NAVBAR - Fond NOIR ---- */
+        /* ---- NAVBAR - Fond NOIR ---- */
+.navbar {
+  position: fixed !important;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 70px;
+
+  background: black;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 40px;
+
+  z-index: 9999;
+}
+
+/* LOGO */
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+
+  color: #c9a96e;
+  text-decoration: none;
+}
+
+
+/* CONTENEUR DES LIENS */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* BOUTON HAMBURGER (masqué sur desktop) */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+
+  width: 32px;
+  height: 32px;
+
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10001;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.nav-toggle.open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-toggle.open span:nth-child(2) {
+  opacity: 0;
+}
+.nav-toggle.open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* OVERLAY pour fermer le menu en cliquant en dehors */
+.nav-overlay {
+  position: fixed;
+  inset: 0;
+  top: 70px;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9998;
+}
+
+
+/* LIENS */
+.nav-item {
+  color: #ffffff;
+
+  text-decoration: none;
+
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+
+  transition: color 0.3s ease;
+}
+
+
+/* Correction des liens Navbar */
+.navbar a,
+.navbar a:visited,
+.navbar a:link {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+
+/* Lien actif */
+.navbar a.active {
+  color: #c9a96e !important;
+}
+
+
+/* Survol */
+.navbar a:hover {
+  color: #e2c98a !important;
+}
+
+        /* ---- ZONE CENTRALISÉE DU SLIDER ---- */
+        .slider-section-container {
+          background: #ffffff;      /* Arrière-plan blanc */
+          padding-top: 10px;        /* Padding top 10 */
+          width: 100%;
+        }
+        
+        .home-slider-wrapper {
+          position: relative;
+          max-width: 500px;        /* Largeur maximale centrée */
+          margin: 0 auto;           /* Centrage horizontal */
+          height: 70vh;             /* Hauteur 30vh */
+          overflow: hidden;
+        }
+
+        .home-slider-wrapper .slider-panel {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+        }
+
+        /* ---- LOGIQUE VISUELLE DU SLIDER ---- */
+        .slider-img {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        .slider-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%);
+        }
+        .slider-caption {
+          position: absolute;
+          bottom: 20px;
+          left: 40px;
+          right: 40px;
+          z-index: 10;
+        }
+        .caption-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.6rem;
+          color: #ffffff;           /* Le texte sur l'image reste blanc */
+          text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+        .caption-sub {
+          font-size: 0.7rem;
+          color: #e2c98a;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          margin-top: 4px;
+        }
+        .caption-dots { display: flex; gap: 6px; margin-top: 10px; }
+        .dot { width: 18px; height: 2px; background: rgba(255,255,255,0.3); }
+        .dot.active { background: #e2c98a; width: 28px; }
+
+        /* ---- ZONE DE CONTENU PRINCIPAL ---- */
+        .main-content {
+          padding: 40px 20px;
+          max-width: 1200px;
+          margin: 0 auto;
+          background: #ffffff;      /* Assure le fond blanc pour les expositions */
+        }
+
+        /* ---- FOOTER ---- */
+        .footer {
+          background: #161410;      /* Garde un fond sombre élégant pour le pied de page */
+          border-top: 1px solid rgba(201,169,110,0.15);
+          padding: 40px 20px;
+          margin-top: 60px;
+          text-align: center;
+        }
+        .footer-logo {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.3rem;
+          color: #c9a96e;
+          margin-bottom: 15px;
+        }
+        .footer-text {
+          font-size: 0.8rem;
+          color: #c8bfa8;
+          letter-spacing: 0.05em;
+          line-height: 1.6;
+        }
+        .footer-copyright {
+          font-size: 0.7rem;
+          color: #7a6035;
+          margin-top: 25px;
+          letter-spacing: 0.1em;
+          text-transform: uppercase;
+        }
+
+        .page-visites-institutions {
+  margin-top: 90px; /* espace sous la navbar fixe */
+  padding: 40px 20px;
+
+  min-height: 70vh;
+
+  background: #ffffff;
+  color: #161410;
+}
+
+
+.page-visites-institutions h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+
+  color: #c9a96e;
+
+  margin-bottom: 20px;
+}
+
+
+.page-visites-institutions p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* =========================================================
+   RESPONSIVE — TABLETTE (≤ 900px : iPad, tablettes Android)
+   ========================================================= */
+@media (max-width: 900px) {
+  .navbar {
+    padding: 0 20px;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 70px;
+    right: 0;
+
+    width: 260px;
+    max-width: 80%;
+    height: calc(100vh - 70px);
+
+    background: black;
+
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+
+    padding: 20px 0;
+
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+
+    z-index: 9999;
+  }
+
+  .nav-links.nav-links-open {
+    transform: translateX(0);
+  }
+
+  .nav-links .nav-item {
+    width: 100%;
+    padding: 16px 30px;
+    box-sizing: border-box;
+  }
+
+  .home-slider-wrapper {
+    max-width: 90%;
+    height: 55vh;
+  }
+
+  .caption-title {
+    font-size: 1.35rem;
+  }
+
+  .main-content {
+    padding: 30px 16px;
+  }
+}
+
+/* =========================================================
+   RESPONSIVE — MOBILE (≤ 480px : Android / iPhone)
+   ========================================================= */
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0 16px;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-size: 1.25rem;
+  }
+
+  .nav-links {
+    top: 60px;
+    height: calc(100vh - 60px);
+    width: 220px;
+  }
+
+  .home-slider-wrapper {
+    max-width: 100%;
+    height: 45vh;
+  }
+
+  .slider-caption {
+    left: 20px;
+    right: 20px;
+    bottom: 14px;
+  }
+
+  .caption-title {
+    font-size: 1.1rem;
+  }
+
+  .caption-sub {
+    font-size: 0.62rem;
+  }
+
+  .main-content {
+    padding: 20px 12px;
+  }
+
+  .page-visites-institutions {
+    margin-top: 70px;
+    padding: 24px 14px;
+  }
+
+  .page-visites-institutions h1 {
+    font-size: 1.5rem;
+  }
+
+  .footer {
+    padding: 30px 14px;
+  }
+}

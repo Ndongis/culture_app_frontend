@@ -1,0 +1,1231 @@
+ @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+        .expo-page {
+          font-family: 'DM Sans', sans-serif;
+          min-height: 50vh;
+          background: #fff;
+          padding: 1rem 2rem 1.5rem;
+          width: 100%;
+          box-sizing: border-box;
+          position: relative;
+        }
+
+        /* ── Header ── */
+        .expo-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 1.2rem;
+        }
+
+        .expo-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 2.4rem;
+          font-weight: 600;
+          color: #1a1a1a;
+          border-left: 4px solid #1a1a1a;
+          padding-left: 1rem;
+          margin: 0;
+          line-height: 1.1;
+        }
+
+        .expo-title .expo-subtitle {
+          display: block;
+          font-size: 1rem;
+          font-weight: 400;
+          color: #888;
+          font-family: 'DM Sans', sans-serif;
+          margin-top: 0.2rem;
+        }
+
+        .header-actions {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .btn-retour {
+          background: #f3f4f6;
+          border: none;
+          border-radius: 50px;
+          padding: 0.38rem 0.85rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: #444;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          transition: all 0.2s;
+        }
+        .btn-retour:hover { background: #e5e7eb; color: #1a1a1a; }
+
+        .btn-add-expo {
+          background: transparent;
+          border: 1.5px solid #1a1a1a;
+          border-radius: 50px;
+          padding: 0.38rem 1.1rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: #1a1a1a;
+          cursor: pointer;
+          transition: all 0.25s;
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+        }
+        .btn-add-expo:hover { background: #1a1a1a; color: white; }
+      
+
+        /* ── Bouton Filtrer par statut ── */
+        .filter-status-wrap {
+          position: relative;
+        }
+
+        .btn-filter-status {
+          background: #f3f4f6;
+          border: 1.5px solid transparent;
+          border-radius: 50px;
+          padding: 0.38rem 1rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: #444;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          transition: all 0.2s;
+        }
+        .btn-filter-status:hover { background: #e5e7eb; color: #1a1a1a; }
+        .btn-filter-status.active {
+          background: #ede9fe;
+          border-color: #6366f1;
+          color: #4f46e5;
+        }
+
+        .filter-status-tag {
+          background: rgba(99,102,241,0.15);
+          color: #4f46e5;
+          border-radius: 50px;
+          padding: 0.1rem 0.55rem;
+          font-size: 0.7rem;
+          font-weight: 600;
+        }
+
+        .filter-status-menu {
+          position: absolute;
+          top: calc(100% + 6px);
+          left: 0;
+          min-width: 190px;
+          background: white;
+          border: 1.5px solid #e0e0e0;
+          border-radius: 10px;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+          z-index: 100;
+          overflow: hidden;
+          animation: dropDown 0.18s ease;
+        }
+
+        @keyframes dropDown {
+          from { opacity: 0; transform: translateY(-6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .filter-status-item {
+          padding: 0.6rem 1rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.85rem;
+          color: #444;
+          cursor: pointer;
+          transition: background 0.15s;
+        }
+        .filter-status-item:hover { background: #f3f4f6; }
+        .filter-status-item.selected { background: #ede9fe; color: #4f46e5; font-weight: 500; }
+
+        /* ── Breadcrumb ── */
+        .breadcrumb-bar {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          margin-bottom: 0.75rem;
+          font-size: 0.82rem;
+          color: #999;
+        }
+        .breadcrumb-bar .crumb-active {
+          color: #6366f1;
+          font-weight: 500;
+        }
+        .breadcrumb-bar .crumb-sep { color: #ccc; }
+
+        /* ── Transition wrapper ── */
+        .view-container {
+          transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+        .view-container.transitioning {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+
+        /* ── Carousel ── */
+        .carousel-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 100%;
+        }
+
+        .carousel-track {
+          position: relative;
+          width: 100%;
+          height: 420px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .expo-card {
+          position: absolute;
+          width: 546px;
+          height: 360px;
+          border-radius: 22px;
+          overflow: hidden;
+          transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: pointer;
+          box-shadow: 0 12px 48px rgba(0,0,0,0.2);
+        }
+
+      .expo-page--admin .carousel-track {
+    height: clamp(220px, 32vw, 336px);
+}
+
+.expo-page--admin .expo-card {
+    width: clamp(260px, 42vw, 460px);
+    aspect-ratio: 460 / 350;
+    height: auto;
+    border-radius: clamp(12px, 1.5vw, 18px);
+}
+
+.expo-page--admin .salle-carousel .carousel-track {
+    height: clamp(190px, 28vw, 302px);
+}
+
+.expo-page--admin .salle-carousel .expo-card {
+    width: clamp(220px, 36vw, 393px);
+    aspect-ratio: 393 / 259;
+    height: auto;
+}
+
+@media (max-width: 992px) {
+
+    .expo-page--admin .carousel-track {
+        height: 280px;
+    }
+
+    .expo-page--admin .expo-card {
+        width: 360px;
+    }
+
+    .expo-page--admin .salle-carousel .carousel-track {
+        height: 240px;
+    }
+
+    .expo-page--admin .salle-carousel .expo-card {
+        width: 310px;
+    }
+
+}
+@media (max-width: 768px) {
+
+    .expo-page--admin .carousel-track {
+        height: 240px;
+    }
+
+    .expo-page--admin .expo-card {
+        width: 85vw;
+        max-width: 340px;
+    }
+
+    .expo-page--admin .salle-carousel .carousel-track {
+        height: 200px;
+    }
+
+    .expo-page--admin .salle-carousel .expo-card {
+        width: 80vw;
+        max-width: 290px;
+    }
+
+}
+
+        .expo-card img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          draggable: false;
+          pointer-events: none;
+          -webkit-user-drag: none;
+          user-select: none;
+        }
+
+        .expo-card-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 40%, rgba(0,0,0,0.3) 100%);
+          pointer-events: none;
+        }
+
+        /* ── Card top buttons ── */
+        .expo-card-top {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          display: flex;
+          gap: 0.6rem;
+          z-index: 2;
+        }
+
+        .btn-card-action {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          background: rgba(255,255,255,0.18);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          border: 1px solid rgba(255,255,255,0.35);
+          border-radius: 24px;
+          color: white;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.72rem;
+          font-weight: 500;
+          cursor: pointer;
+          padding: 0.25rem 0.6rem;
+          transition: all 0.2s;
+          white-space: nowrap;
+        }
+        .btn-card-action svg, .btn-card-action .btn-icon {
+          width: 11px;
+          height: 11px;
+          flex-shrink: 0;
+        }
+        .btn-card-action:hover { background: rgba(255,255,255,0.32); }
+        .btn-card-action.delete:hover { background: rgba(239,68,68,0.65); border-color: rgba(239,68,68,0.5); }
+        .btn-card-action.publish { background: rgba(34,197,94,0.2); border-color: rgba(34,197,94,0.6); color: #bbf7d0; }
+        .btn-card-action.publish:hover { background: rgba(34,197,94,0.45); border-color: #22c55e; color: #fff; }
+        .btn-card-action.published { background: rgba(34,197,94,0.38); border-color: #22c55e; color: #fff; }
+        .btn-card-action.published:hover { background: rgba(239,68,68,0.45); border-color: rgba(239,68,68,0.6); }
+        .btn-card-action.archive { background: rgba(220,38,38,0.2); border-color: rgba(220,38,38,0.5); color: #fecaca; }
+        .btn-card-action.archive:hover { background: rgba(220,38,38,0.45); border-color: #dc2626; color: #fff; }
+        .btn-card-action.unarchive { background: rgba(220,38,38,0.35); border-color: #dc2626; color: #fecaca; }
+        .btn-card-action.unarchive:hover { background: rgba(34,197,94,0.35); border-color: rgba(34,197,94,0.6); color: #bbf7d0; }
+
+        /* ── Card bottom info ── */
+        .expo-card-bottom {
+          position: absolute;
+          bottom: 1.5rem;
+          left: 1.5rem;
+          right: 1.5rem;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          z-index: 2;
+        }
+
+        .expo-card-info {
+          border-left: 4px solid white;
+          padding-left: 1rem;
+          flex: 1;
+          min-width: 0;
+        }
+
+        .expo-card-name {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 1.8rem;
+          font-weight: 600;
+          color: white;
+          margin: 0 0 0.2rem;
+          line-height: 1.2;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .expo-card-desc {
+          font-size: 1rem;
+          color: rgba(255,255,255,0.88);
+          margin: 0 0 0.35rem;
+          font-weight: 300;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .expo-card-meta {
+          font-size: 0.95rem;
+          color: rgba(255,255,255,0.65);
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+        }
+
+        .btn-voir-salles {
+          background: transparent;
+          border: 2px solid white;
+          border-radius: 50px;
+          padding: 0.32rem 0.85rem;
+          color: white;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.75rem;
+          cursor: pointer;
+          white-space: nowrap;
+          transition: all 0.25s;
+          margin-left: 1rem;
+          flex-shrink: 0;
+        }
+        .btn-voir-salles:hover { background: white; color: #1a1a1a; }
+
+        /* ── Navigation ── */
+        .carousel-nav {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          margin-top: 1.75rem;
+        }
+
+        .nav-arrow {
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: #666;
+          font-size: 1.1rem;
+          padding: 0.2rem 0.4rem;
+          transition: color 0.2s;
+          line-height: 1;
+        }
+        .nav-arrow:hover { color: #1a1a1a; }
+
+        .dots { display: flex; gap: 0.5rem; align-items: center; }
+
+        .dot {
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background: #ccc;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          transition: background 0.3s;
+        }
+        .dot.active { background: #6366f1; }
+
+        /* ── Salles carousel accent ── */
+        .dot.salle-active { background: #f59e0b; }
+
+        .salle-nav-accent .nav-arrow:hover { color: #f59e0b; }
+
+        /* ── Carousel salles : -10% (mode visite) ── */
+        .expo-page--visite .salle-carousel .carousel-track { height: 378px; }
+        .expo-page--visite .salle-carousel .expo-card { width: 491px; height: 324px; }
+
+        /* ── Mode visite : espacement vertical réduit ── */
+        .expo-page--visite { padding: 0.75rem 2rem 1rem; }
+        .expo-page--visite .expo-header { margin-bottom: 0.5rem; }
+        .expo-page--visite .expo-title { font-size: 1.9rem; }
+        .expo-page--visite .breadcrumb-bar { margin-bottom: 0.35rem; }
+
+        /* ── Mode visite : boutons nav carousel réduits ── */
+        .expo-page--visite .carousel-nav {
+          margin-top: 0.75rem;
+          gap: 0.6rem;
+        }
+        .expo-page--visite .nav-arrow {
+          font-size: 0.85rem;
+          padding: 0.1rem 0.3rem;
+        }
+        .expo-page--visite .dot {
+          width: 7px;
+          height: 7px;
+        }
+        .expo-page--visite .dots { gap: 0.35rem; }
+
+        /* ── Empty salles ── */
+        .no-salles {
+          text-align: center;
+          padding: 3rem;
+          color: #bbb;
+          font-size: 0.95rem;
+        }
+
+        /* ── Modal ── */
+        .modal-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.45);
+          z-index: 9999;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .modal-box {
+          background: white;
+          border-radius: 16px;
+          padding: 2rem;
+          width: 440px;
+          max-width: 90vw;
+          box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .modal-title {
+          font-family: 'Cormorant Garamond', serif;
+          font-size: 1.6rem;
+          font-weight: 600;
+          margin: 0 0 1.5rem;
+          color: #1a1a1a;
+        }
+
+        .modal-form label {
+          display: block;
+          font-size: 0.82rem;
+          font-weight: 500;
+          color: #555;
+          margin-bottom: 0.35rem;
+          margin-top: 1rem;
+        }
+
+        .modal-form input,
+        .modal-form textarea {
+          width: 100%;
+          border: 1.5px solid #e0e0e0;
+          border-radius: 8px;
+          padding: 0.6rem 0.9rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.9rem;
+          outline: none;
+          transition: border-color 0.2s;
+          box-sizing: border-box;
+          resize: none;
+        }
+        .modal-form input:focus,
+        .modal-form textarea:focus { border-color: #6366f1; }
+
+        .modal-actions {
+          display: flex;
+          justify-content: flex-end;
+          gap: 0.75rem;
+          margin-top: 1.75rem;
+        }
+
+        .btn-cancel {
+          background: transparent;
+          border: 1.5px solid #ccc;
+          border-radius: 8px;
+          padding: 0.4rem 1rem;
+          cursor: pointer;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.8rem;
+          color: #555;
+          transition: all 0.2s;
+        }
+        .btn-cancel:hover { border-color: #999; color: #333; }
+
+        .btn-confirm {
+          border: none;
+          border-radius: 8px;
+          padding: 0.4rem 1rem;
+          cursor: pointer;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.8rem;
+          font-weight: 500;
+          color: white;
+          transition: opacity 0.2s;
+          display: flex;
+          align-items: center;
+          gap: 0.35rem;
+        }
+        .btn-confirm.danger  { background: #ef4444; }
+        .btn-confirm.primary { background: #6366f1; }
+        .btn-confirm:hover   { opacity: 0.85; }
+
+        .delete-warning {
+          color: #555;
+          font-size: 0.9rem;
+          margin: 0.5rem 0 0;
+          line-height: 1.6;
+        }
+
+        .field-required { color: #ef4444; font-weight: 600; }
+        .error-msg { display: block; color: #ef4444; font-size: 0.78rem; margin-top: 0.2rem; margin-bottom: 0.1rem; }
+        .input-error { border-color: #ef4444 !important; background: #fff5f5; }
+        .input-error-wrap .theme-dropdown-trigger { border-color: #ef4444 !important; }
+        /* ── Loading state (from Institutions) ── */
+        .loading-state {
+          text-align: center;
+          padding: 100px 20px;
+          color: #888;
+        }
+
+        .spinner {
+          width: 50px;
+          height: 50px;
+          border: 3px solid #e5e7eb;
+          border-top-color: #000000;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 0 auto 24px;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+
+        .status-msg { text-align: center; padding: 4rem; font-size: 1rem; }
+        .status-msg.error { color: #ef4444; }
+        .status-msg.empty { color: #999; }
+
+        /* ── Modal large pour sélection modèle ── */
+        .modal-box-large {
+          width: 800px;
+          max-width: 95vw;
+        }
+
+        /* ── Layout deux colonnes pour modal salle ── */
+        .modal-salle-layout {
+          display: flex;
+          gap: 1.5rem;
+        }
+
+        .modal-salle-left {
+          flex: 1;
+          min-width: 200px;
+        }
+
+        .modal-salle-right {
+          flex: 1.5;
+          min-width: 280px;
+        }
+
+        .modal-salle-right-label {
+          display: block;
+          font-size: 0.82rem;
+          font-weight: 500;
+          color: #555;
+          margin-bottom: 0.5rem;
+        }
+
+        /* ── Grille des modèles de salle ── */
+        .modeles-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+          gap: 0.75rem;
+          max-height: 300px;
+          overflow-y: auto;
+          padding: 0.75rem;
+          background: #fafafa;
+          border-radius: 12px;
+          border: 1px solid #e5e5e5;
+        }
+
+        .modele-item {
+          position: relative;
+          cursor: pointer;
+          border-radius: 10px;
+          overflow: hidden;
+          background: white;
+          border: 3px solid transparent;
+          transition: all 0.25s ease;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .modele-item:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .modele-item.selected {
+          border-color: #6366f1;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .modele-item-image {
+          width: 100%;
+          height: 80px;
+          object-fit: cover;
+          display: block;
+        }
+
+        .modele-item-placeholder {
+          width: 100%;
+          height: 80px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: rgba(255,255,255,0.7);
+        }
+
+        .modele-item-name {
+          padding: 0.4rem 0.5rem;
+          margin: 0;
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: #333;
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          background: white;
+        }
+
+        .modele-check {
+          position: absolute;
+          top: 5px;
+          right: 5px;
+          width: 22px;
+          height: 22px;
+          background: #6366f1;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          box-shadow: 0 2px 6px rgba(99, 102, 241, 0.4);
+        }
+
+        .modeles-loading,
+        .modeles-empty {
+          padding: 2rem;
+          text-align: center;
+          color: #888;
+          font-size: 0.9rem;
+          background: #fafafa;
+          border-radius: 12px;
+          border: 1px solid #e5e5e5;
+        }
+
+        /* ══════════════════════════════════════════════
+           RESPONSIVE
+        ══════════════════════════════════════════════ */
+
+        /* ── Tablette large (≤ 1024px) ── */
+        @media (max-width: 1024px) {
+          .expo-page { padding: 1.5rem 1.5rem 2rem; }
+          .expo-page--visite { padding: 0.75rem 1.5rem 1rem; }
+
+          .carousel-track { height: 360px; }
+          .expo-card { width: 460px; height: 304px; }
+
+          .expo-page--admin .carousel-track { height: 290px; }
+          .expo-page--admin .expo-card { width: 368px; height: 243px; }
+
+          .expo-page--visite .salle-carousel .carousel-track { height: 324px; }
+          .expo-page--visite .salle-carousel .expo-card { width: 414px; height: 273px; }
+          .expo-page--admin .salle-carousel .carousel-track { height: 261px; }
+          .expo-page--admin .salle-carousel .expo-card { width: 331px; height: 218px; }
+
+          .btn-add-expo { font-size: 0.85rem; padding: 0.5rem 1.3rem; }
+          .btn-retour { font-size: 0.82rem; padding: 0.5rem 1rem; }
+          .btn-voir-salles { font-size: 0.88rem; padding: 0.45rem 1rem; }
+          .btn-card-action { font-size: 0.84rem; padding: 0.35rem 0.8rem; }
+          .btn-card-action svg, .btn-card-action .btn-icon { width: 12px; height: 12px; }
+          .btn-confirm, .btn-cancel { font-size: 0.85rem; padding: 0.5rem 1.1rem; }
+        }
+
+        /* ── Tablette (≤ 768px) ── */
+        @media (max-width: 768px) {
+          .expo-page { padding: 1rem 1rem 1.5rem; }
+          .expo-page--visite { padding: 0.5rem 1rem 0.75rem; }
+
+          .expo-header { flex-direction: column; gap: 0.75rem; align-items: flex-start; }
+          .expo-title { font-size: 1.8rem; }
+          .expo-page--visite .expo-title { font-size: 1.5rem; }
+          .header-actions { width: 100%; justify-content: flex-end; flex-wrap: wrap; }
+
+          .carousel-track { height: 300px; }
+          .expo-card { width: 380px; height: 250px; border-radius: 16px; }
+          .expo-card-name { font-size: 1.4rem; }
+          .expo-card-desc { font-size: 0.85rem; }
+          .expo-card-meta { font-size: 0.8rem; }
+
+          .expo-page--admin .carousel-track { height: 240px; }
+          .expo-page--admin .expo-card { width: 304px; height: 200px; border-radius: 13px; }
+
+          .expo-page--visite .salle-carousel .carousel-track { height: 270px; }
+          .expo-page--visite .salle-carousel .expo-card { width: 342px; height: 225px; }
+          .expo-page--admin .salle-carousel .carousel-track { height: 216px; }
+          .expo-page--admin .salle-carousel .expo-card { width: 274px; height: 180px; }
+
+          /* ── Boutons header ── */
+          .btn-add-expo { font-size: 0.82rem; padding: 0.45rem 1.1rem; }
+          .btn-retour { font-size: 0.8rem; padding: 0.45rem 0.9rem; }
+
+          /* ── Boutons carte ── */
+          .btn-voir-salles { padding: 0.4rem 0.9rem; font-size: 0.82rem; }
+          .btn-card-action { font-size: 0.75rem; padding: 0.28rem 0.6rem; gap: 0.3rem; }
+          .btn-card-action svg, .btn-card-action .btn-icon { width: 11px; height: 11px; }
+
+          /* ── Boutons modal ── */
+          .btn-confirm, .btn-cancel { font-size: 0.82rem; padding: 0.5rem 1rem; }
+          .modal-actions { gap: 0.5rem; flex-wrap: wrap; }
+
+          .modal-salle-layout { flex-direction: column; }
+          .modal-salle-right { min-width: 100%; }
+          .modeles-grid { max-height: 200px; }
+          .modal-box { padding: 1.5rem; }
+          .modal-box-large { width: 95vw; }
+        }
+
+        /* ── Mobile (≤ 480px) ── */
+        @media (max-width: 480px) {
+          .expo-page { padding: 0.75rem 0.75rem 1rem; }
+          .expo-page--visite { padding: 0.4rem 0.75rem 0.6rem; }
+
+          .expo-title { font-size: 1.4rem; border-left-width: 3px; padding-left: 0.65rem; }
+          .expo-page--visite .expo-title { font-size: 1.2rem; }
+          .expo-title .expo-subtitle { font-size: 0.82rem; }
+
+          .carousel-track { height: 240px; }
+          .expo-card {
+            width: calc(100vw - 60px);
+            max-width: 320px;
+            height: 210px;
+            border-radius: 14px;
+          }
+          .expo-card-name { font-size: 1.15rem; }
+          .expo-card-desc { display: none; }
+          .expo-card-bottom { bottom: 1rem; left: 1rem; right: 1rem; }
+          .expo-card-info { padding-left: 0.65rem; }
+          .expo-card-top { top: 0.65rem; right: 0.65rem; gap: 0.35rem; }
+          .expo-page--admin .carousel-track { height: 192px; }
+          .expo-page--admin .expo-card { width: calc(100vw - 60px); max-width: 256px; height: 168px; border-radius: 11px; }
+
+          .expo-page--visite .salle-carousel .carousel-track { height: 216px; }
+          .expo-page--visite .salle-carousel .expo-card { width: calc(100vw - 60px); max-width: 288px; height: 189px; }
+          .expo-page--admin .salle-carousel .carousel-track { height: 173px; }
+          .expo-page--admin .salle-carousel .expo-card { width: calc(100vw - 60px); max-width: 230px; height: 151px; }
+
+          .btn-voir-salles { padding: 0.35rem 0.75rem; font-size: 0.75rem; margin-left: 0.5rem; }
+
+          .carousel-nav { margin-top: 0.75rem; gap: 0.5rem; }
+          .nav-arrow { font-size: 0.9rem; padding: 0.15rem 0.35rem; }
+          .dot { width: 7px; height: 7px; }
+          .dots { gap: 0.3rem; }
+
+          .expo-page--visite .carousel-nav { margin-top: 0.4rem; }
+
+          .breadcrumb-bar { font-size: 0.75rem; }
+
+          /* ── Header buttons ── */
+          .header-actions { gap: 0.4rem; flex-wrap: wrap; justify-content: flex-start; }
+          .btn-add-expo { font-size: 0.75rem; padding: 0.4rem 0.85rem; border-width: 1.5px; }
+          .btn-retour { font-size: 0.73rem; padding: 0.4rem 0.75rem; }
+
+          /* ── Card action buttons ── */
+          .btn-card-action { font-size: 0.68rem; padding: 0.22rem 0.45rem; gap: 0.25rem; border-radius: 14px; }
+          .btn-card-action svg, .btn-card-action .btn-icon { width: 10px; height: 10px; }
+          .expo-card-top { gap: 0.25rem; top: 0.5rem; right: 0.5rem; }
+
+          /* ── Voir salles button ── */
+          .btn-voir-salles { font-size: 0.7rem; padding: 0.3rem 0.6rem; margin-left: 0.35rem; border-width: 1.5px; }
+
+          /* ── Modal buttons ── */
+          .btn-confirm, .btn-cancel { font-size: 0.78rem; padding: 0.45rem 0.85rem; }
+          .modal-actions { gap: 0.4rem; flex-wrap: wrap; justify-content: flex-end; margin-top: 1rem; }
+
+          .modal-box { padding: 1.25rem; border-radius: 12px; }
+          .modal-title { font-size: 1.3rem; margin-bottom: 1rem; }
+        }
+
+        /* ── Très petit mobile (≤ 360px) ── */
+        @media (max-width: 360px) {
+          .expo-page { padding: 0.5rem 0.5rem 0.75rem; }
+          .expo-page--visite { padding: 0.3rem 0.5rem 0.5rem; }
+
+          .expo-title { font-size: 1.2rem; }
+          .expo-page--visite .expo-title { font-size: 1rem; }
+
+          /* ── Header buttons : texte masqué, icône seule ── */
+          .btn-add-expo { font-size: 0.7rem; padding: 0.35rem 0.7rem; border-width: 1.5px; }
+          .btn-retour { font-size: 0.68rem; padding: 0.35rem 0.6rem; }
+          .header-actions { gap: 0.3rem; }
+
+          /* ── Boutons carte : icône seule ── */
+          .btn-card-action span { display: none; }
+          .btn-card-action { padding: 0.25rem 0.35rem; gap: 0; border-radius: 50%; width: 28px; height: 28px; justify-content: center; }
+          .btn-card-action svg, .btn-card-action .btn-icon { width: 12px; height: 12px; }
+          .expo-card-top { gap: 0.2rem; top: 0.4rem; right: 0.4rem; }
+
+          /* ── Voir salles : texte court ── */
+          .btn-voir-salles { font-size: 0.65rem; padding: 0.25rem 0.5rem; margin-left: 0.25rem; border-width: 1.5px; }
+
+          /* ── Nav arrows ── */
+          .nav-arrow { font-size: 0.8rem; padding: 0.1rem 0.25rem; }
+          .dot { width: 6px; height: 6px; }
+
+          /* ── Modal buttons ── */
+          .btn-confirm, .btn-cancel { font-size: 0.72rem; padding: 0.4rem 0.7rem; }
+          .modal-actions { gap: 0.3rem; }
+          .modal-box { padding: 1rem; }
+        }
+
+        /* ── Modal Expo : colonne image upload ── */
+        .modal-expo-image-col {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.75rem;
+          flex: 0 0 200px;
+          position: sticky;
+          top: 0;
+        }
+
+        .modal-expo-image-preview {
+          position: relative;
+          width: 200px;
+          height: 240px;
+          border-radius: 14px;
+          overflow: hidden;
+          background: #f8f8ff;
+          border: 2px dashed #c4b5fd;
+          box-shadow: 0 4px 18px rgba(99,102,241,0.08);
+          flex-shrink: 0;
+          cursor: pointer;
+          transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .modal-expo-image-preview:hover {
+          border-color: #6366f1;
+          box-shadow: 0 6px 24px rgba(99,102,241,0.18);
+        }
+        .modal-expo-image-preview.drag-over {
+          border-color: #6366f1;
+          background: #ede9fe;
+          box-shadow: 0 0 0 4px rgba(99,102,241,0.2);
+        }
+
+        .modal-expo-img-placeholder {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          padding: 1rem;
+          text-align: center;
+        }
+        .upload-icon-anim {
+          color: #c4b5fd;
+          transition: transform 0.3s ease, color 0.2s;
+        }
+        .modal-expo-image-preview:hover .upload-icon-anim,
+        .modal-expo-image-preview.drag-over .upload-icon-anim {
+          color: #6366f1;
+          transform: translateY(-4px);
+        }
+        .upload-hint-main {
+          font-size: 0.82rem;
+          font-weight: 600;
+          color: #6366f1;
+        }
+        .upload-hint-sub {
+          font-size: 0.72rem;
+          color: #aaa;
+        }
+        .modal-expo-image-preview:hover .upload-hint-sub { color: #888; }
+
+        .modal-expo-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.3s ease;
+        }
+        .modal-expo-image-preview:hover .modal-expo-img { transform: scale(1.05); }
+
+        .modal-expo-img-overlay {
+          position: absolute;
+          inset: 0;
+          background: rgba(99,102,241,0.5);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0.4rem;
+          color: white;
+          font-size: 0.82rem;
+          font-weight: 600;
+          opacity: 0;
+          transition: opacity 0.25s;
+          backdrop-filter: blur(2px);
+        }
+        .modal-expo-image-preview:hover .modal-expo-img-overlay { opacity: 1; }
+
+        .btn-choose-image {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.4rem;
+          width: 200px;
+          background: #6366f1;
+          border: none;
+          border-radius: 8px;
+          padding: 0.5rem 0.75rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.82rem;
+          font-weight: 500;
+          color: white;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .btn-choose-image:hover { background: #4f46e5; }
+
+        .btn-remove-img {
+          background: none;
+          border: 1px solid #ef4444;
+          border-radius: 8px;
+          color: #ef4444;
+          font-size: 0.78rem;
+          padding: 0.3rem 0.75rem;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .btn-remove-img:hover { background: #fef2f2; }
+
+        /* ── Thème multi-select ── */
+        .theme-multiselect {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          margin-top: 0.25rem;
+        }
+
+        .theme-tags-zone {
+          min-height: 40px;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.4rem;
+          padding: 0.5rem 0.75rem;
+          background: #fafafa;
+          border: 1.5px solid #e0e0e0;
+          border-radius: 8px;
+          align-items: center;
+        }
+
+        .theme-tags-empty {
+          font-size: 0.82rem;
+          color: #bbb;
+          font-style: italic;
+        }
+
+        .theme-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.3rem;
+          background: #ede9fe;
+          border: 1.5px solid #c4b5fd;
+          border-radius: 50px;
+          padding: 0.25rem 0.7rem;
+          font-size: 0.82rem;
+          font-weight: 500;
+          color: #4f46e5;
+        }
+
+        .theme-tag-remove {
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: #7c3aed;
+          font-size: 1rem;
+          line-height: 1;
+          padding: 0;
+          display: flex;
+          align-items: center;
+          transition: color 0.15s;
+        }
+        .theme-tag-remove:hover { color: #ef4444; }
+
+        /* ── Dropdown thème ── */
+        .theme-dropdown-wrap {
+          position: relative;
+        }
+
+        .theme-dropdown-trigger {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: white;
+          border: 1.5px solid #e0e0e0;
+          border-radius: 8px;
+          padding: 0.6rem 0.9rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.88rem;
+          color: #555;
+          cursor: pointer;
+          transition: border-color 0.2s;
+          box-sizing: border-box;
+        }
+        .theme-dropdown-trigger:hover:not(.disabled),
+        .theme-dropdown-trigger:focus:not(.disabled) { border-color: #6366f1; outline: none; }
+        .theme-dropdown-trigger.disabled { cursor: not-allowed; background: #f9f9f9; }
+
+        .theme-dropdown-menu {
+          position: absolute;
+          bottom: calc(100% + 6px);
+          left: 0;
+          right: 0;
+          background: white;
+          border: 1.5px solid #e0e0e0;
+          border-radius: 10px;
+          box-shadow: 0 -8px 24px rgba(0,0,0,0.12);
+          z-index: 100;
+          overflow: hidden;
+          animation: dropUp 0.18s ease;
+        }
+
+        @keyframes dropUp {
+          from { opacity: 0; transform: translateY(6px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .theme-dropdown-item {
+          padding: 0.6rem 1rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.88rem;
+          color: #444;
+          cursor: pointer;
+          transition: background 0.15s;
+        }
+        .theme-dropdown-item:hover { background: #f3f4f6; }
+        .theme-dropdown-item.selected { background: #ede9fe; color: #4f46e5; font-weight: 500; }
+
+        /* ── Theme tag row avec picker ── */
+        .theme-tag-row {
+          display: flex;
+          flex-direction: column;
+          gap: 0.3rem;
+          width: 100%;
+        }
+
+        .theme-tags-zone {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        /* ── Picker d'image par thème ── */
+        .theme-img-picker-wrap {
+          position: relative;
+        }
+
+        .theme-img-picker-trigger {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: #f3f4f6;
+          border: 1.5px solid #e0e0e0;
+          border-radius: 8px;
+          padding: 0.35rem 0.75rem;
+          cursor: pointer;
+          font-size: 0.8rem;
+          color: #555;
+          transition: all 0.2s;
+          width: 100%;
+          justify-content: space-between;
+        }
+        .theme-img-picker-trigger:hover { border-color: #6366f1; background: #ede9fe; color: #4f46e5; }
+
+        .theme-img-thumb {
+          width: 22px;
+          height: 22px;
+          object-fit: cover;
+          border-radius: 4px;
+          flex-shrink: 0;
+        }
+
+        .theme-img-picker-grid {
+          position: absolute;
+          bottom: calc(100% + 6px);
+          left: 0;
+          right: 0;
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 6px;
+          padding: 10px;
+          background: white;
+          border: 1.5px solid #e0e0e0;
+          border-radius: 12px;
+          box-shadow: 0 -8px 24px rgba(0,0,0,0.14);
+          z-index: 200;
+          max-height: 220px;
+          overflow-y: auto;
+          animation: dropUp 0.16s ease;
+        }
+
+        .theme-img-picker-item {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 4/3;
+          border-radius: 7px;
+          overflow: hidden;
+          cursor: pointer;
+          border: 2.5px solid transparent;
+          transition: border-color 0.15s, transform 0.15s;
+        }
+        .theme-img-picker-item:hover { transform: scale(1.04); border-color: #a5b4fc; }
+        .theme-img-picker-item.selected { border-color: #6366f1; }
+        .theme-img-picker-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .theme-img-check {
+          position: absolute;
+          inset: 0;
+          background: rgba(99,102,241,0.35);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 1.1rem;
+          font-weight: 700;
+        }
+
+        /* ── Galerie plein modal ── */
+        .gallery-fullview {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .gallery-fullview-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .gallery-fullview-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 8px;
+          max-height: 460px;
+          overflow-y: auto;
+          padding: 2px;
+        }
+
+        .gallery-fullview-item {
+          position: relative;
+          aspect-ratio: 4/3;
+          border-radius: 8px;
+          overflow: hidden;
+          cursor: pointer;
+          border: 2.5px solid transparent;
+          transition: border-color 0.15s, transform 0.15s;
+        }
+        .gallery-fullview-item:hover { transform: scale(1.03); border-color: #a5b4fc; }
+        .gallery-fullview-item.selected { border-color: #6366f1; }
+        .gallery-fullview-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* ── Bouton BoxIcon salle ── */
+        .btn-icon-box {
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+        }
