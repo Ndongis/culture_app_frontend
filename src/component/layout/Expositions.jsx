@@ -930,7 +930,12 @@ export default function Expositions({ isVisitePage: isVisitePage = false, titreE
     };
 
     const enableLandscape = async () => {
-       
+        console.log("nnn "+navigator.userAgent)
+        if (!isAndroid()){
+            
+            return;
+        } 
+
         try {
             // Passage en fullscreen (souvent nécessaire pour lock l'orientation)
             if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
@@ -1145,7 +1150,7 @@ export default function Expositions({ isVisitePage: isVisitePage = false, titreE
                                         versSalle(salle.id, activeExpo.id);
                                     }
 
-                                }, 3000);
+                                }, 500);
                             }}
                             title="Visiter la salle"
                         >
